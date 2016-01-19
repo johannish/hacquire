@@ -1,0 +1,35 @@
+P2P Design
+
+Components 
+
+1. model
+2. view
+3. controller
+4. comm
+
+-------------------------------------------------------------------------------
+
+1. Model: 		Keeps the state of the game.
+
+2. View: 		Gui. Displays the game. Only displays components the user 
+				should be allowed to see.
+
+3. Controller:	Contains the logic of the game. Checks peers claims to state.
+
+4. Comm:		Ability to communicate between:
+					1. internal components.
+					2. peer to peer clients.
+				Comm may be merely abstract. May be included in controller
+				because it might turn out that having a separate peice for
+				communication is redundant and unnecessary.
+
+-------------------------------------------------------------------------------
+
+Each client is comprized of one set of the above components. 
+
+1. Model: 	
+
+4. Comm:	When a state claim it broadcasted to all the clients the Comm asks
+			the controller if it's an acceptable state. If not it broadcasts 
+			another message notifying everyone it rejects the change.
+
