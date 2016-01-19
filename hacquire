@@ -1,0 +1,15 @@
+#! /bin/env tclsh
+
+proc main {argv0 argv} {
+	lassign [chan pipe] pr pw 
+	exec [info nameofexecutable]  [file dirname [info script]]/controller.tcl >@$pw &
+	close $pw
+	set data [gets $pr]
+	set controlport [dict get $data port]
+
+	exec [info nameofexecutable] [file dirname [info script]]/gui.tcl \
+		controlport $controlport >@stdout 2>@stderr
+
+}
+main $argv0 $argv
+
