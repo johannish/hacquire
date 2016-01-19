@@ -32,6 +32,23 @@ proc placeTile {x_cord y_cord} {
 	board set cell $x $y o
 }
 
+proc pickRandomTile {} {
+	variable rowCount
+	variable columnCount
+
+	while {1} {
+		# This method of using rand is inclusive of the lower bounds but not the upper (the multiplier).
+		set rand_x [expr { int(rand() * ($columnCount)) }]
+		set rand_y [expr { int(rand() * ($rowCount)) }]
+
+		set tile [tiles get cell $rand_x $rand_y]
+		if {$tile eq {o}} {
+			tiles set cell $rand_x $rand_y {}
+			return [dict create x $rand_x y $rand_y]
+		}
+	}
+}
+
 proc createMatrixReport {} {
 	variable columnCount
 
@@ -49,6 +66,10 @@ proc createMatrixReport {} {
 }
 
 initBoard
+for {set x 0} {$x < 10} {incr x} {
+	set randTile [pickRandomTile]
+	placeTile [dict get $randTile x] [dict get $randTile y]
+}
 createMatrixReport
 puts [matrixReport printmatrix board]
 puts [matrixReport printmatrix tiles]
