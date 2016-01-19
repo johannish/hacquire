@@ -1,5 +1,4 @@
 package require struct::matrix
-package require report
 
 namespace eval board {
 	variable columnCount 0

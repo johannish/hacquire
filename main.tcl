@@ -1,10 +1,10 @@
 #!/usr/bin/tclsh
 
-source ./board.tcl
+package require report
 
-set board::columnCount 12
-set board::rowCount 9
-board::initBoard
+source ./game.tcl
+
+game::setup 0 
 
 proc createMatrixReport {} {
 	variable columnCount
@@ -19,14 +19,14 @@ proc createMatrixReport {} {
 		}
 	}
 
-	::report::report matrixReport $board::columnCount style simpletable
+	::report::report matrixReport $game::board::columnCount style simpletable
 }
 
 for {set x 0} {$x < 10} {incr x} {
-	set randTile [board::pickRandomTile]
-	board::placeTile [dict get $randTile x] [dict get $randTile y]
+	set randTile [game::board::pickRandomTile]
+	game::board::placeTile [dict get $randTile x] [dict get $randTile y]
 }
 
 createMatrixReport
-puts [matrixReport printmatrix board::board]
-puts [matrixReport printmatrix board::tiles]
+puts [matrixReport printmatrix game::board::board]
+puts [matrixReport printmatrix game::board::tiles]
