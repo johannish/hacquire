@@ -8,14 +8,16 @@ variable columnCount 12
 variable rowCount 9
 
 proc initBoard {} {
-	::struct::matrix tiles
 	variable rowCount
 	variable columnCount
 
+	::struct::matrix tiles
+	tiles add rows $rowCount
+	tiles add columns $columnCount
+
 	for {set y 0} {$y < $rowCount} {incr y} {
-		tiles add row $y
 		for {set x 0} {$x < $columnCount} {incr x} {
-			tiles add column $x
+			tiles set cell $x $y o
 		}
 	}
 
@@ -27,25 +29,26 @@ proc initBoard {} {
 proc placeTile {x_cord y_cord} {
 	set x [expr $x_cord -1]
 	set y [expr $y_cord -1]
-	board set cell $x $y h
+	board set cell $x $y o
 }
 
-proc formatBoard {matrix} {
+proc createMatrixReport {} {
 	variable columnCount
 
-	::report::defstyle simpletable {} {
-		data	set [split "[string repeat "| "   [columns]]|"]
-		top	set [split "[string repeat "+ - " [columns]]+"]
-		bottom	set [top get]
-		top	enable
-		bottom	enable
+	if {[lsearch [::report::styles] simpletable] < 0} {
+		::report::defstyle simpletable {} {
+			data	set [split "[string repeat "| "   [columns]]|"]
+			top	set [split "[string repeat "+ - " [columns]]+"]
+			bottom	set [top get]
+			top	enable
+			bottom	enable
+		}
 	}
 
-	::report::report r $columnCount style simpletable
-	r printmatrix $matrix
+	::report::report matrixReport $columnCount style simpletable
 }
 
 initBoard
-placeTile 12 1
-placeTile 5 9
-puts [formatBoard board]
+createMatrixReport
+puts [matrixReport printmatrix board]
+puts [matrixReport printmatrix tiles]
